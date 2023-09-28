@@ -15,7 +15,7 @@ const App = () => {
 
   const [data, setData] = useState(null);
   const [requestParams, setRequestParams] = useState({});
-  const textArea = (requestParams.method === 'get' || requestParams.method === 'delete')? false : true 
+  const textArea = (requestParams.method === 'GET' || requestParams.method === 'DELETE')? false : true 
   const callApi = (requestParams) => {
     // mock output
     setData({

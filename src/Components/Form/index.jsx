@@ -15,7 +15,7 @@ const [formData, setFormData] = useState({
   }
 
   const handleClick = e => {
-    setFormData({...formData, method: e.target.id})
+    setFormData({...formData, method: e.target.id});
   }
 
   const handleUrlOnChange = e => {
@@ -35,10 +35,10 @@ const [formData, setFormData] = useState({
         <button type="submit">GO!</button>
       </label>
       <label className="methods">
-        <span id="get" onClick={handleClick}>GET</span>
-        <span id="post" onClick={handleClick}>POST</span>
-        <span id="put"onClick={handleClick}>PUT</span>
-        <span id="delete"onClick={handleClick}>DELETE</span>
+        <button id="GET" type="submit" onClick={handleClick}>GET</button>
+        <button id="POST" type="submit" onClick={handleClick}>POST</button>
+        <button id="PUT" type="submit" onClick={handleClick}>PUT</button>
+        <button id="DELETE"type="submit" onClick={handleClick}>DELETE</button>
       </label>
 
       {
