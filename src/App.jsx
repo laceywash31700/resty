@@ -15,8 +15,7 @@ const App = () => {
 
   const [data, setData] = useState(null);
   const [requestParams, setRequestParams] = useState({});
-
-
+  const textArea = (requestParams.method === 'get' || requestParams.method === 'delete')? false : true 
   const callApi = (requestParams) => {
     // mock output
     setData({
@@ -35,7 +34,7 @@ const App = () => {
       <div>Request Method: {requestParams.method}</div>
       <div>URL: {requestParams.url}</div>
       <Form
-        method = {requestParams.method}
+        method = {textArea}
         handleApiCall={callApi}
       />
       <Results data={data} />
