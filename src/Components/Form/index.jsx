@@ -1,30 +1,59 @@
+import { useState } from 'react';
 import './Form.scss';
 
-export const Form = ({handleApiCall}) => {
-  
+export const Form = ({handleApiCall, method}) => {
+const [formData, setFormData] = useState({
+  method: '',
+  url: '',
+  body:''
+});
+
+
   const handleSubmit = e => {
     e.preventDefault();
-    const formData = {
-      method:'GET',
-      url: 'https://pokeapi.co/api/v2/pokemon',
-    };
     handleApiCall(formData);
   }
 
+  const handleClick = e => {
+    setFormData({...formData, method: e.target.id});
+  }
+
+  const handleUrlOnChange = e => {
+    setFormData({...formData, url: e.target.value })
+  }
+
+  const handleBodyOnChange = e => {
+    setFormData({...formData, body: e.target.value })
+  }
+
   return (
-    <>
+    <> 
     <form onSubmit={handleSubmit}>
       <label >
         <span>URL: </span>
-        <input name='url' type='text' />
+        <input name='url' type='text' value={formData.url} onChange={handleUrlOnChange}/>
         <button type="submit">GO!</button>
       </label>
       <label className="methods">
-        <span id="get">GET</span>
-        <span id="post">POST</span>
-        <span id="put">PUT</span>
-        <span id="delete">DELETE</span>
+        <button id="GET" type="submit" onClick={handleClick}>GET</button>
+        <button id="POST" type="submit" onClick={handleClick}>POST</button>
+        <button id="PUT" type="submit" onClick={handleClick}>PUT</button>
+        <button id="DELETE"type="submit" onClick={handleClick}>DELETE</button>
       </label>
+
+      {
+      method
+       &&  
+       <label>
+      <textarea
+        value={formData.body}
+        onChange={handleBodyOnChange}
+        name="body"
+        rows={4}
+        cols={40}
+        />
+        </label>
+         }
     </form>
   </>
   )
