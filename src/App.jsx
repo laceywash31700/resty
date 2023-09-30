@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.scss';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import Form from './Components/Form';
 import Results from './Components/Results';
+import axios from 'axios';
 import { useState } from 'react';
 
 // Let's talk about using index.js and some other name in the component folder.
@@ -15,16 +16,38 @@ const App = () => {
 
   const [data, setData] = useState(null);
   const [requestParams, setRequestParams] = useState({});
-  const textArea = (requestParams.method === 'GET' || requestParams.method === 'DELETE')? false : true 
+  
+  
+  const apiMethods = {
+    'GET': axios.get,
+    'POST': axios.post,
+    'PUT': axios.put,
+    'DELETE': axios.delete
+  };
+
+
+  useEffect(() => {
+ async function fetchData(){   
+  let { method, url, body } = requestParams;
+  if (!method || !url) {
+      console.error('Invalid request parameters');
+      return;
+    }
+    if (data && Object.keys(data).length) return;
+    
+    let apiFunction = apiMethods[method]; 
+    
+    try {
+      const response = await apiFunction(url, body);
+      setData(response.data);
+    } catch (error) {
+      console.error('API Error:', error);
+    };
+  }
+  fetchData();
+  }, [requestParams.method, requestParams.url, requestParams.body, data] )
+
   const callApi = (requestParams) => {
-    // mock output
-    setData({
-      count: 2,
-      results: [
-        { name: 'fake thing 1', url: 'http://fakethings.com/1' },
-        { name: 'fake thing 2', url: 'http://fakethings.com/2' },
-      ],
-    });
     setRequestParams(requestParams)
   }
 
@@ -33,8 +56,8 @@ const App = () => {
       <Header />
       <div>Request Method: {requestParams.method}</div>
       <div>URL: {requestParams.url}</div>
+      {requestParams.body && (<div>Body: {requestParams.body}</div>)}
       <Form
-        method = {textArea}
         handleApiCall={callApi}
       />
       <Results data={data} />
