@@ -1,61 +1,61 @@
 import { useState } from 'react';
 import './Form.scss';
 
-export const Form = ({handleApiCall, method}) => {
-const [formData, setFormData] = useState({
-  method: '',
-  url: '',
-  body:''
-});
+export const Form = ({ handleApiCall, isTextArea}) => {
+  const [formData, setFormData] = useState({
+    method: '',
+    url: '',
+    body: ''
+  });
 
 
   const handleSubmit = e => {
     e.preventDefault();
     handleApiCall(formData);
   }
+  const handleOnChange = e => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value })
+  }
 
   const handleClick = e => {
-    setFormData({...formData, method: e.target.id});
+    const { id } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      method: id
+    }));
   }
-
-  const handleUrlOnChange = e => {
-    setFormData({...formData, url: e.target.value })
-  }
-
-  const handleBodyOnChange = e => {
-    setFormData({...formData, body: e.target.value })
-  }
-
+ 
   return (
-    <> 
-    <form onSubmit={handleSubmit}>
-      <label >
-        <span>URL: </span>
-        <input name='url' type='text' value={formData.url} onChange={handleUrlOnChange}/>
-        <button type="submit">GO!</button>
-      </label>
-      <label className="methods">
-        <button id="GET" type="submit" onClick={handleClick}>GET</button>
-        <button id="POST" type="submit" onClick={handleClick}>POST</button>
-        <button id="PUT" type="submit" onClick={handleClick}>PUT</button>
-        <button id="DELETE"type="submit" onClick={handleClick}>DELETE</button>
-      </label>
-
-      {
-      method
-       &&  
-       <label>
-      <textarea
-        value={formData.body}
-        onChange={handleBodyOnChange}
-        name="body"
-        rows={4}
-        cols={40}
-        />
+    <>
+      <form onSubmit={handleSubmit}>
+        <label >
+          <span>URL: </span>
+          <input name='url' type='text' value={formData.url} onChange={handleOnChange} />
+          <button type="submit">GO!</button>
         </label>
-         }
-    </form>
-  </>
+        <label className="methods">
+          <button className={formData.method === 'GET'? 'selected': null} id="GET" type='button' onClick={handleClick}>GET</button>
+          <button className={formData.method === 'POST'? 'selected': null}id="POST" type='button' onClick={handleClick}>POST</button>
+          <button className={formData.method === 'PUT'? 'selected': null} id="PUT" type='button' onClick={handleClick}>PUT</button>
+          <button className={formData.method === 'DELETE'? 'selected': null}id="DELETE" type='button' onClick={handleClick}>DELETE</button>
+        </label>
+
+        {
+          (formData.method === 'POST' || formData.method === 'PUT')
+          &&
+          (<label>
+            <textarea
+              value={formData.body}
+              onChange={handleOnChange}
+              name="body"
+              rows={4}
+              cols={40}
+            />
+          </label>)
+        }
+      </form>
+    </>
   )
 }
 
