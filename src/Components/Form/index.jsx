@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Form.scss';
 
-export const Form = ({ handleApiCall, isTextArea}) => {
+export const Form = ({ handleApiCall}) => {
   const [formData, setFormData] = useState({
     method: '',
     url: '',

@@ -29,7 +29,8 @@ function reducer(state, action) {
     case 'CALL API':
       return {
         ...state,
-        requestParams: action.payload
+        requestParams: action.payload,
+        // response: null
       }
 
     case 'ADD TO HISTORY':
@@ -46,10 +47,10 @@ function reducer(state, action) {
         active: state.history
       };
 
-    case 'HIDE HISTORY':
+    case 'RESET RESPONSE':
       return {
         ...state,
-        active: {}
+        response: {}
       };
   }
 }
@@ -61,22 +62,22 @@ const App = () => {
   useEffect(() => {
     async function fetchData() {
       let { method, url, body } = state.requestParams;
-      if (!method || !url) {
-        console.error('Invalid request parameters');
-        return;
-      }
-      if (response && Object.keys(response).length) return;
+      dispatch({ type: 'ADD TO HISTORY', payload: { ...state.requestParams, data: null } });
+      if (!url) return;
+      if (state.response && Object.keys(state.response).length) return;
       try {
         let apiFunction = apiMethods[method];
+        console.log('hey i made it')
         const request = await apiFunction(url, body);
         const action = {
           type: 'ADD TO HISTORY',
           payload: {
             ...state.requestParams,
-            data: request.data
+            data: request.data,
           }
         }
         dispatch(action)
+        console.log('hey this is the history', state.history)
       } catch (error) {
         console.error('API Error:', error);
       };
