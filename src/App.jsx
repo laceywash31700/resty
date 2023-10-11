@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
