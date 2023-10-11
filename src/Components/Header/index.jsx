@@ -1,9 +1,9 @@
 
-const  Header = () => {
-  return (  <header>
+const Header = () => {
+  return (<header>
     <h1>RESTy</h1>
   </header>
-   )
+  )
 }
 
-export default  Header
+export default Header
