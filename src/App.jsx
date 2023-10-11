@@ -3,6 +3,7 @@ import './App.scss';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import Form from './Components/Form';
+import History from './Components/History';
 import Results from './Components/Results';
 import axios from 'axios';
 
@@ -30,7 +31,12 @@ function reducer(state, action) {
       return {
         ...state,
         requestParams: action.payload,
-        // response: null
+      }
+
+    case 'CLEAR DATA':
+      return{
+        ...state,
+        response: null
       }
 
     case 'ADD TO HISTORY':
@@ -62,7 +68,7 @@ const App = () => {
   useEffect(() => {
     async function fetchData() {
       let { method, url, body } = state.requestParams;
-      dispatch({ type: 'ADD TO HISTORY', payload: { ...state.requestParams, data: null } });
+      dispatch({ type: 'CLEAR DATA'});
       if (!url) return;
       if (state.response && Object.keys(state.response).length) return;
       try {
@@ -105,6 +111,7 @@ const App = () => {
         handleApiCall={callApi}
       />
       <Results data={state.response} />
+      <History history={state.history}/>
       <Footer />
     </React.Fragment>
   );
